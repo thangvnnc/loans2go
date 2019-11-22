@@ -59,11 +59,11 @@ function checkAuthAdmin(req, res, next) {
     }
 }
 
-app.get('/admin', function(req, res) {
+app.get('/admin', checkAuthAdmin, function(req, res) {
     res.redirect('admin.html');
 });
 
-app.post('/admin/load', function(req, res) {
+app.post('/admin/load', checkAuthAdmin, function(req, res) {
     getAllCustomer(function(err, rows) {
         if (err) {
             res.send({error: "Lỗi hệ thống vui lòng liên hệ (+84) 035 260 8118"});
