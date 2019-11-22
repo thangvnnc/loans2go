@@ -100,10 +100,10 @@ app.post('/apply', function(req, res) {
 
 function getAllCustomer(fn) {
     connect(function(db) {
-        db.all("SELECT * FROM Customers", function(err,rows){
+        db.all("SELECT id, name, phone, amount, ishide FROM Customers", function(err,rows){
             if(err) {
                 fn(err, null);
-                writeLog("SELECT * FROM Customers");
+                writeLog("SELECT id, name, phone, amount, ishide FROM Customers");
                 writeLog(err);
                 return;
             }
