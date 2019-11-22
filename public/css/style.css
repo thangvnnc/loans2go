@@ -1420,6 +1420,12 @@ Contact Page
 	top: 0;
 }
 
+.logo-text {
+	font-size: 17px;
+    color: red;
+    font-weight: bold;
+}
+
 @media (min-width: 1200px) {
 	.container {
 		max-width: 1176px;
