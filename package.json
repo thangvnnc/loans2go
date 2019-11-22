@@ -14,11 +14,13 @@
     "type": "git",
     "url": "git+https://github.com/thangvnnc/loans2go.git"
   },
-  
   "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/thangvnnc/loans2go/issues"
   },
-  "homepage": "https://github.com/thangvnnc/loans2go#readme"
+  "homepage": "https://github.com/thangvnnc/loans2go#readme",
+  "dependencies": {
+    "fs": "0.0.1-security"
+  }
 }
