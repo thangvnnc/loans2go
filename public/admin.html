@@ -22,6 +22,8 @@
 
 	<!-- Main Stylesheets -->
 	<link rel="stylesheet" href="css/style.css"/>
+	<link rel="stylesheet" href="css/dataTables.bootstrap.min.css"/>
+
 </head>
 <body>
 	<!-- Page Preloder -->
@@ -33,7 +35,7 @@
 	<header class="header-section">
 		<a href="javascript:void(0)" class="site-logo">
 			<!-- <img src="img/logo.png" alt=""> -->
-			<span class="logo-text">TIEN TIEN	</span>
+			<span class="logo-text">TIEN TIEN</span>
 		</a>
 		<nav class="header-nav">
 			<ul class="main-menu">
@@ -47,168 +49,38 @@
 	</header>
 	<!-- Header Section end -->
 
-	<!-- Hero Section end -->
-	<section class="hero-section">
+	<!-- Info Section -->
+	<section class="info-section spad">
 		<div class="container">
-			<div class="row">
-				<div class="col-lg-6">
-					<div class="hs-text">
-						<!-- <a href="javascript:void(0);" class="site-btn sb-dark">Find out more</a> -->
-						<h2>Vay nhanh
-							<br> Lãi suất cực thấp
-							<br> Ưu đãi tối đa
-						</h2>
-						<p>Chúng tôi sẽ phản hồi nhanh chóng về khả năng hỗ trợ tài chính đến Quý Khách!
-							<br>Ngay bây giờ bạn có thể đăng ký hồ sơ dễ dàng trong thời gian diễn ra chương trình ưu đãi giảm lãi suất.
-							<br>Hổ trợ khách hàng mọi nơi
-						</p>
-					</div>
-				</div>
-				<div class="col-lg-6">
-					<form class="hero-form" onSubmit="return false">
-						<input class="ip-name" type="text" placeholder="Họ và tên">
-						<input class="ip-phone" type="text" placeholder="Số điện thoại">
-						<select class="sl-amount">
-							<option value="">Chọn khoản vay</option>
-							<option value="1000000">Vay 1,000,000 Vnd</option>
-							<option value="5000000">Vay 5,000,000 Vnd</option>
-							<option value="10000000">Vay 10,000,000 Vnd</option>
-							<option value="20000000">Vay 20,000,000 Vnd</option>
-							<option value="30000000">Vay 30,000,000 Vnd</option>
-							<option value="40000000">Vay 40,000,000 Vnd</option>
-							<option value="50000000">Vay 50,000,000 Vnd</option>
-							<option value="60000000">Vay 60,000,000 Vnd</option>
-							<option value="70000000">Vay 70,000,000 Vnd</option>
-							<option value="80000000">Vay 80,000,000 Vnd</option>
-							<option value="90000000">Vay 90,000,000 Vnd</option>
-							<option value="100000000">Vay 100,000,000 Vnd</option>
-						</select>
-						<p>Tư vấn hình thức vay phù hợp nhất với khách hàng, tỉ lệ giải ngân khoản vay cao.
-							Đội ngũ tư vấn nhiều kinh nghiệm, nhiệt tình, am hiểu sản phẩm sẽ mang lại cho khách hàng những lựa chọn tối ưu nhất.
-							Hỗ trợ vay với mức lãi suất ưu đãi nhất.
-							Hồ sơ đơn giản, không mất phí làm hồ sơ
-							Trong suốt quá trình vay, khách hàng có thế tất toán hồ sơ vào bất kỳ thời điểm nào.</p>
-						<button class="site-btn btn-apply">Nộp hồ sơ</button>
-					</form>
-				</div>
-			</div>
-		</div>
-		<div class="hero-slider owl-carousel">
-			<div class="hs-item set-bg" data-setbg="img/hero-slider/1.jpg"></div>
-			<div class="hs-item set-bg" data-setbg="img/hero-slider/2.jpg"></div>
-			<div class="hs-item set-bg" data-setbg="img/hero-slider/3.jpg"></div>
+			<div>
+				<div><h2>Danh sách khách đăng ký vay</h2></div>
+				<div class="chk-show-hide"><input type="checkbox"/> Ẩn / hiện</div>
+			</div>				
+			<br>
+			<table id="tb-admin" class="table table-striped table-bordered" style="width:100%">
+				<thead>
+					<tr>
+						<th>STT</th>
+						<th>Tên</th>
+						<th>Số điện thoại</th>
+						<th>Số tiền vay</th>
+						<th>Tác vụ</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+				<!-- <tfoot>
+					<tr>
+						<th>STT</th>
+						<th>Tên</th>
+						<th>Số điện thoại</th>
+						<th>Số tiền vay</th>
+						<th>Tác vụ</th>
+					</tr>
+				</tfoot> -->
+			</table>
 		</div>
 	</section>
-	<!-- Hero Section end -->
-
-	<!-- Why Section end -->
-	<section class="why-section spad">
-		<div class="container">
-			<div class="text-center mb-5 pb-4">
-				<h2>Tại sao bạn chọn chúng tôi?</h2>
-			</div>
-			<div class="row">
-				<div class="col-md-4">
-					<div class="icon-box-item">
-						<div class="ib-icon">
-							<i class="flaticon-012-24-hours"></i>
-						</div>
-						<div class="ib-text">
-							<h5>Hồ sơ nhanh và đơn giản!</h5>
-							<p>Nhấp nút bên dưới để NỘP HỒ SƠ hỗ trợ vay vốn online hoặc GỌI TRỰC TIẾP cho chúng tôi. (+84) 0789 516 306</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="icon-box-item">
-						<div class="ib-icon">
-							<i class="flaticon-036-customer-service"></i>
-						</div>
-						<div class="ib-text">
-							<h5>Đội ngũ tư vấn tận tình</h5>
-							<p>Đội ngũ tư vấn nhiều kinh nghiệm, nhiệt tình, am hiểu sản phẩm sẽ mang lại cho khách hàng những lựa chọn tối ưu nhất.</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="icon-box-item">
-						<div class="ib-icon">
-							<i class="flaticon-039-info"></i>
-						</div>
-						<div class="ib-text">
-							<h5>Thanh toán dễ dàng</h5>
-							<p>Trong suốt quá trình vay, khách hàng có thế tất toán hồ sơ vào bất kỳ thời điểm nào.</p>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="text-center pt-3">
-				<a href="#" class="site-btn sb-big">Nộp ngay!</a>
-			</div>
-		</div>
-	</section>
-	<!-- Why Section end -->
-
-	<!-- CTA Section end -->
-	<section class="cta-section set-bg" data-setbg="img/cta-bg.jpg">
-		<div class="container">
-			<h2>Bạn muốn vay với lãi suất <strong>cực thấp</strong> đầy ưu đãi<br> Hồ sơ đơn giãn?</h2>
-			<h5>Nộp hồ sơ ngay cho chúng tôi ngay</h5>
-		</div>
-	</section>
-	<!-- CTA Section end -->
-
-	<!-- Feature Section -->
-	<section class="feature-section spad">
-		<div class="container">
-			<div class="feature-item">
-				<div class="row">
-					<div class="col-lg-6">
-						<img src="img/feature-1.jpg" alt="">
-					</div>
-					<div class="col-lg-6">
-						<div class="feature-text">
-							<h2>Gói ưu đãi "Vay liền tay - Lãi giảm ngay"</h2>
-							<p>
-								Kính gửi Quý khách hàng,<br>
-								Với mong muốn đồng hành và đáp ứng kịp thời nhu cầu tài chính của quý khách hàng, giai đoạn cuối năm 2019 chúng tôi cho ra đời gói ưu đãi “VAY LIỀN TAY-LÃI GIẢM NGAY ” với mức lãi suất vô cùng hấp dẫn.<br>
-								Thời gian thực hiện: Từ nay đến 31/12/2019 (hoặc đến khi hết hạn mức ưu đãi, tùy theo điều kiện nào đến trước).<br>
-									Sản phẩm áp dụng: Mua nhà/đất, xây sửa nhà, mua xe ô tô, tiêu dùng, bố sung vốn kinh doanh.<br>
-									Lãi suất ưu đãi:7%/năm trong 6 tháng đầu (*)
-							</p>
-							<a href="#" class="readmore">Nộp ngay <img src="img/arrow.png" alt=""></a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="feature-item">
-				<div class="row">
-					<div class="col-lg-6 order-lg-2">
-						<img src="img/feature-2.jpg" alt="">
-					</div>
-					<div class="col-lg-6 order-lg-1">
-						<div class="feature-text">
-							<h2>QUY TRÌNH XỬ LÝ HỒ SƠ</h2>
-							<p>
-								Quy trình quản lý hồ sơ: Thủ tục đơn giản và thời gian phê duyệt nhanh chóng trong vòng 48 giờ làm việc.<br>
-								Hồ sơ đơn giản:<br>
-								+ Chứng minh nhân dân<br>
-								+ Hộ khẩu<br>
-								Ưu đãi hơn nếu có một trong các chứng từ sau:<br>
-								+ Hoá đơn điện nước<br>
-								+ Hoặc Hợp đồng lao động + bảng lương hoặc Sao kê lương hoặc Quyết định hưu trí<br>
-								+ Hoặc Giấy ĐKKD/ Giấy xác nhận kinh doanh/ hợp đồng thuê sạp<br>
-								Liên hệ ngay với nhân viên qua số phone / zalo (+84) 0789 516 306 gặp Tiên để được tư vấn miễn phí.<br>
-								</p>
-							<a href="#" class="readmore">Nộp ngay <img src="img/arrow.png" alt=""></a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- Feature Section end -->
-
 
 	<!-- Help Section -->
 	<section class="help-section spad">
@@ -279,12 +151,53 @@
 	<!-- Footer Section end -->
 	
 	<!--====== Javascripts & Jquery ======-->
-	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/jquery-3.3.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/jquery.slicknav.min.js"></script>
 	<script src="js/owl.carousel.min.js"></script>
 	<script src="js/jquery-ui.min.js"></script>
 	<script src="js/main.js"></script>
+	<script src="js/jquery.dataTables.min.js"></script>
+	<script src="js/dataTables.bootstrap.min.js"></script>
+	<script>
+	$(document).ready(function() {
+		loadData();
+	});
 
+	function loadData() {
+		$.ajax({
+            url: '/admin/load',
+            type: 'post',
+			dataType: 'json',
+            success: function (result) {
+				if (result.error != "OK") {
+					showModal(err);
+					return;
+				}
+				let items = result.rows;
+				buildHtmlList(items)
+				return;
+            },
+        });
+	}
+
+	function buildHtmlList(items) {
+		var tbBody = $('#tb-admin').find('tbody');
+		$(tbBody).html('');
+		for(let idx = 0; idx < items.length; idx++) {
+			let item = items[idx];
+			var html = '';
+			html += '<tr id = ' + item.id + '>';
+			html += '<td>' + item.id + '</td>';
+			html += '<td>' + item.name + '</td>';
+			html += '<td>' + item.phone + '</td>';
+			html += '<td>' + item.amount + ' VND</td>';
+			html += '<td><button class="btn btn-primary">Ẩn</button><button class="btn btn-primary">Xóa</button></td>';
+			html += '</tr>';
+			$(tbBody).append(html);
+		}
+		$('#tb-admin').DataTable();
+	}
+	</script>
 	</body>
 </html>

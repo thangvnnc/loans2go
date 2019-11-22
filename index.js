@@ -12,42 +12,46 @@ let session = require('express-session');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(session({
-    secret: 'ABCDEFGHIJK',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true }
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
 }));
 
 app.listen(PORT, function(err) {
     if (err) {
         writeLog(err);
         return;
-    };
+    }
 
     initDatabaseSQLite();
     console.log("Server running...");
 });
 
 app.get('/login', function (req, res) {
+    if (req.session.sessionUser) {
+        res.redirect('/admin');
+        return;
+    }
     res.redirect('login.html');
 });
 
 app.post('/login', function (req, res) {
-    var post = req.body;
-    if (post.username === 'tien' && post.password === '0978248835ox') {
+    let post = req.body;
+    if (post.username == "tien" && post.password == "ox") {
         let sessionUser = {
             username: post.username,
-            password: post.password,            
-        }
+            password: post.password,
+        };
         req.session.sessionUser = sessionUser;
         res.redirect('/admin');
     } else {
-      res.send('Bad user/pass');
+        res.redirect('/login');
     }
 });
 
-function checkAuth(req, res, next) {
+function checkAuthAdmin(req, res, next) {
     if (!req.session.sessionUser) {
         res.redirect('login.html');
     } else {
@@ -55,8 +59,18 @@ function checkAuth(req, res, next) {
     }
 }
 
-app.use('/admin', checkAuth, function(req, res) {
+app.get('/admin', function(req, res) {
     res.redirect('admin.html');
+});
+
+app.post('/admin/load', function(req, res) {
+    getAllCustomer(function(err, rows) {
+        if (err) {
+            res.send({error: "Lỗi hệ thống vui lòng liên hệ (+84) 035 260 8118"});
+            return;
+        } 
+        res.send({error: "OK", rows: rows});
+    })
 });
 
 app.post('/apply', function(req, res) {
@@ -73,28 +87,43 @@ app.post('/apply', function(req, res) {
         name : name,
         phone : phone,
         amount : amount,
-    }
+    };
 
     insertCustomer(customer, function(err) {
         if (err) {
             res.send({error: "Lỗi hệ thống vui lòng liên hệ (+84) 035 260 8118"});
             return;
-        } 
+        }
         res.send({error: "OK"});
     });
 });
 
+function getAllCustomer(fn) {
+    connect(function(db) {
+        db.all("SELECT * FROM Customers", function(err,rows){
+            if(err) {
+                fn(err, null);
+                writeLog("SELECT * FROM Customers");
+                writeLog(err);
+                return;
+            }
+           
+            fn(null, rows);
+        })
+    })
+}
+
 function insertCustomer(customer, fn) {
     connect(function(db) {
-        let stmt = db.prepare("INSERT INTO Customers (name, phone, amount)  VALUES (?, ?, ?)", function(err) {
+        var stmt = db.prepare("INSERT INTO Customers (name, phone, amount, ishide)  VALUES (?, ?, ?, ?)", function(err) {
             if (err) {
                 fn(err);
                 writeLog("Error prepare INSERT INTO Customers");
-                writeLog(err);                
+                writeLog(err);
                 return;
             }
 
-            stmt.run([customer.name, customer.phone, customer.amount], function(err) {
+            stmt.run([customer.name, customer.phone, customer.amount, 0], function(err) {
                 if (err) {
                     fn(err);
                     writeLog("Error run INSERT INTO Customers");
@@ -102,34 +131,33 @@ function insertCustomer(customer, fn) {
                     return;
                 }
 
-                fn(null);    
+                fn(null);
             });  
         });
              
     });
 }
 
-function writeLog(message) {
-    message += '';
+function writeLog(err) {
+    console.error(err);
+    let message = err + '';
     fs.appendFileSync("./log.txt", message + "\n");
 }
 
 function initDatabaseSQLite() {
     connect(function(db) {
-        db.run("CREATE TABLE IF NOT EXISTS Customers (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, phone TEXT, amount REAL)",
+        db.run("CREATE TABLE IF NOT EXISTS Customers (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, phone TEXT, amount REAL, ishide INTEGER)",
         function (err) {
             if (err) {
-                db.close();
                 writeLog(err);
                 return;
             }
-            db.close();
         });        
     })
 }
 
 function connect(fn) {
-    let db = new sqlite3.Database(DBInfo, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE
+    var db = new sqlite3.Database(DBInfo, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE
         , (err) => {
             if (err) {
                 writeLog(err);
@@ -141,18 +169,3 @@ function connect(fn) {
             });
         });
 }
-
-
-
-    // var db = new sqlite3.Database(':memory:');
-    // db.serialize(function() {
-    //     db.run("CREATE TABLE IF NOT EXISTS Customers (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, amount REAL, phone TEXT)");
-    //     var stmt = db.prepare("INSERT INTO Customers (name, amount, phone)  VALUES (?, ?, ?)");
-    //     for (var i = 0; i < 10; i++) {
-    //         stmt.run("a " + i, "a " + i, "b " + i);
-    //     }
-    //     stmt.finalize();
-    //     db.each("SELECT id, name FROM Customers", function(err, row) {
-    //         console.log(row.id + ": " + row.name);
-    //     });
-    // });

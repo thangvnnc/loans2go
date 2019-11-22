@@ -1437,6 +1437,10 @@ Contact Page
     font-weight: bold;
 }
 
+.chk-show-hide {
+	float: right;
+}
+
 @media (min-width: 1200px) {
 	.container {
 		max-width: 1176px;
