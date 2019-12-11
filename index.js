@@ -1,21 +1,19 @@
 'use strict';
-
-const DBInfo = "./Info.db";
 const PORT = process.env.PORT || 9999;
 let express = require('express');
 let app = express();
 let bodyParser = require('body-parser');
-let jwt = require('jsonwebtoken');
 let fs = require('fs');
 let path = require('path');
-let sqlite3 = require('sqlite3').verbose();
 let session = require('express-session');
 let mongoose = require('mongoose');
 
 const UserDB = 'thang';
 const PassDB = 'thang01652608118';
 const HostDB = 'mongodb://' + UserDB + ':' + PassDB + '@ds253428.mlab.com:53428/vaytragop';
-mongoose.connect(HostDB, {useNewUrlParser: true, poolSize: 10, reconnectTries: 30, connectTimeoutMS: 10});
+mongoose.connect(HostDB, {useNewUrlParser: true, poolSize: 10, reconnectTries: 30});
+var Customer = require('./app/models/customer');
+var TLog = require('./app/models/tlog');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -33,7 +31,6 @@ app.listen(PORT, function(err) {
         return;
     }
 
-    initDatabaseSQLite();
     console.log("Server running...");
 });
 
@@ -72,13 +69,13 @@ app.get('/admin', checkAuthAdmin, function(req, res) {
 });
 
 app.post('/admin/load', checkAuthAdmin, function(req, res) {
-    getAllCustomer(function(err, rows) {
+    Customer.find({}, function (err, rows) {
         if (err) {
             res.send({error: "Lỗi hệ thống vui lòng liên hệ (+84) 035 260 8118"});
             return;
-        } 
+        }
         res.send({error: "OK", rows: rows});
-    })
+    });
 });
 
 app.post('/apply', function(req, res) {
@@ -91,101 +88,25 @@ app.post('/apply', function(req, res) {
         return;
     }
 
-    let customer = {
-        name : name,
-        phone : phone,
-        amount : amount,
-    };
-
-    insertCustomer(customer, function(err) {
-        if (err) {
+    var c = new Customer();
+    c.name = name;
+    c.phone = phone;
+    c.amount = amount;
+    c.ishide = false;
+    c.save(function(err, customer) {
+        if(err) {
             res.send({error: "Lỗi hệ thống vui lòng liên hệ (+84) 035 260 8118"});
-            return;
+            return err;
         }
-        res.send({error: "OK"});
+        else {
+            res.send({error: "OK"});
+        }
     });
 });
 
-function getAllCustomer(fn) {
-    connect(function(db) {
-        db.all("SELECT id, name, phone, amount, ishide FROM Customers", function(err,rows){
-            if(err) {
-                fn(err, null);
-                writeLog("SELECT id, name, phone, amount, ishide FROM Customers");
-                writeLog(err);
-                return;
-            }
-           
-            fn(null, rows);
-        })
-    })
-}
-
-function insertCustomer(customer, fn) {
-    connect(function(db) {
-        var stmt = db.prepare("INSERT INTO Customers (name, phone, amount, ishide)  VALUES (?, ?, ?, ?)", function(err) {
-            if (err) {
-                fn(err);
-                writeLog("Error prepare INSERT INTO Customers");
-                writeLog(err);
-                return;
-            }
-
-            stmt.run([customer.name, customer.phone, customer.amount, 0], function(err) {
-                if (err) {
-                    fn(err);
-                    writeLog("Error run INSERT INTO Customers");
-                    writeLog(err);
-                    return;
-                }
-
-                fn(null);
-            });  
-        });
-             
-    });
-}
-
 function writeLog(err) {
-    console.error(err);
-    let message = err + '';
-    fs.appendFileSync("./log.txt", message + "\n");
-}
-
-function initDatabaseSQLite() {
-    connect(function(db) {
-        db.run("CREATE TABLE IF NOT EXISTS Customers (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, phone TEXT, amount REAL, ishide INTEGER)",
-        function (err) {
-            if (err) {
-                writeLog(err);
-                return;
-            }
-        });        
+    var tLog = new TLog();
+    tLog.content = err + '';
+    tLog.save(function(err, customer) {
     })
 }
-
-function connect(fn) {
-    var db = new sqlite3.Database(DBInfo, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE
-        , (err) => {
-            if (err) {
-                writeLog(err);
-                return;
-            }
-    
-            db.serialize(function() {
-                fn(db);
-            });
-        });
-}
-
-// var User = require('./app/models/user');
-// var u = new User();
-// u.username = "tnt";
-// u.email = "email@gmail.com";
-// u.setPassword("hash");
-// u.save(function(err, user){
-//     if(err) {
-//         console.log(err)
-//         return err;
-//     }
-// });
