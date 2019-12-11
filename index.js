@@ -1,3 +1,5 @@
+'use strict';
+
 const DBInfo = "./Info.db";
 const PORT = process.env.PORT || 9999;
 let express = require('express');
@@ -8,6 +10,12 @@ let fs = require('fs');
 let path = require('path');
 let sqlite3 = require('sqlite3').verbose();
 let session = require('express-session');
+let mongoose = require('mongoose');
+
+const UserDB = 'thang';
+const PassDB = 'thang01652608118';
+const HostDB = 'mongodb://' + UserDB + ':' + PassDB + '@ds253428.mlab.com:53428/vaytragop';
+mongoose.connect(HostDB, {useNewUrlParser: true, poolSize: 10, reconnectTries: 30, connectTimeoutMS: 10});
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -169,3 +177,15 @@ function connect(fn) {
             });
         });
 }
+
+// var User = require('./app/models/user');
+// var u = new User();
+// u.username = "tnt";
+// u.email = "email@gmail.com";
+// u.setPassword("hash");
+// u.save(function(err, user){
+//     if(err) {
+//         console.log(err)
+//         return err;
+//     }
+// });
