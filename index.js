@@ -56,6 +56,13 @@ app.post('/login', function (req, res) {
     }
 });
 
+app.get('/port', function(req, res) {
+    let resData = {
+        port: PORT
+    }
+    res.send(resData);
+})
+
 function checkAuthAdmin(req, res, next) {
     if (!req.session.sessionUser) {
         res.redirect('login.html');
